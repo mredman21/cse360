@@ -10,15 +10,16 @@ package cse360assign2;
 
 
 /**
+ * 
  * @author mredm
  * The class SimpleList contains two variables - int[] list and int count.
- * The following methods are available: 
- * 	+SimpleList()
- * 	+add(int): void
- * 	+remove(int): void
- * 	+count(): int
- * 	+toString(): String
- * 	+search(): int
+ * The following methods are available:
+ * 		+SimpleList()
+ * 		+add(int): void
+ * 		+remove(int): void
+ * 		+count(): int
+ * 		+toString(): String
+ * 		+search(): int
  */
 public class SimpleList {
 	
@@ -30,8 +31,8 @@ public class SimpleList {
 	
 	/**
 	 * SimpleList() is used for the constructor of the class.
-	 * Creates a new array that holds 10 integers. Count is 
-	 * used to keep track of the size, it is set to zero.
+	 * Creates a new array that holds 10 integers. Count is
+	 * used to keep track of the size, it is set to be zero.
 	 */
 	public SimpleList() {
 		list = new int[10];
@@ -41,49 +42,63 @@ public class SimpleList {
 	
 	
 	/**
+	 * 
 	 * @param numberToAdd value to be inserted at index 0 of the array
-	 * Shifts the current numbers in the array up one position to make room
-	 * for the new number. The count is increased by 1, if the array is not 
-	 * already full (indicated if count equals 10). With every new addition,
-	 * the count will increase.
+	 * Shifts the current array members up one position to make room for
+	 * the new number. The count is increased by 1.
+	 * 
+	 * CHANGES: If the array if full, increase the size of the list by 50%
 	 */
 	public void add(int numberToAdd) {
-		if (count == 0) {
-			list[0] = numberToAdd;
-			count++;
-		} else if (count < 10) {
-			for(int index = count-1; index >= 0; index--) 
-				list[index + 1] = list[index];
-			list[0] = numberToAdd;
-			count++;
-		} else {
-			//uniquely removes end to avoid outOfBounds error
-			list[count - 1] = list[count - 2];
-			//start two down from the end
-			for(int index = count - 2; index >= 0; index--) 
-				list[index + 1] = list[index];
-			list[0] = numberToAdd;
-		}
+		//if the array is full, make the array 50% bigger
+		if (count >= list.length) {
+			int[] newArray = new int[(int)Math.floor(list.length*1.5)];
+			//fill in the new array with elements of the old array
+			for(int index = 0; index < list.length; index++)
+				newArray[index] = list[index];
+			list = newArray;
+		} 
+		
+		//add the number to the array and increase the count
+		for(int index = count - 1; index >= 0; index--)
+			list[index+1] = list[index];
+		list[0] = numberToAdd;
+		count++;
 	}
 	
 	
 	
-	/**
-	 * @param numberToRemove value to be removed from array.
-	 * Searches for the number and moves all subsequent numbers down one position
-	 * to accommodate the change. The count is decreased by one. The first instance
-	 * is the one to be removed.
+	/** 
+	 * 
+	 * @param numberToRemove value to be removed from an array
+	 * Removes the first instance of the parameter.
+	 * If the number exists, all subsequent members move down by one
+	 * position to accommodate the change
+	 * 
+	 * CHANGES: If the number of elements goes below 75% of the list, the 
+	 * size of the array will decrease by 25%
 	 */
 	public void remove(int numberToRemove) {
 		int numberIndex = this.search(numberToRemove);
-		
-		if (numberIndex >= 0) {
-			for(int index = numberIndex; index < list.length - 1; index++)
+		if (numberIndex != -1) {
+			for(int index = numberIndex; index < list.length - 1; index++) 
 				list[index] = list[index + 1];
 			count--;
 		}
+		
+		//decrease the size if the array is more than 25% empty
+		int elementsTooLow = (int)Math.floor(list.length*0.25);
+		int[] newArray;
+		if (elementsTooLow <= 0) {
+			newArray = new int[1];
+			newArray[0] = list[0];
+		} else if (list.length <= elementsTooLow) {
+			newArray = new int[(int)(Math.round(list.length*0.75))];
+			for(int index = 0; index < list.length; index++)
+				newArray[index] = list[index];
+			list = newArray;
+		}		
 	}
-	
 	
 	
 	
@@ -98,7 +113,6 @@ public class SimpleList {
 				numberOfElements++;
 		return numberOfElements;
 	}
-	
 	
 	
 	/**
@@ -119,8 +133,6 @@ public class SimpleList {
 		}
 		return stringList;
 	}
-	
-	
 	
 	/**
 	 * @param numberToFind value to locate inside the array
@@ -146,7 +158,6 @@ public class SimpleList {
 	public int[] getArray() {
 		return list;
 	}
-	
 	
 	
 	/**
