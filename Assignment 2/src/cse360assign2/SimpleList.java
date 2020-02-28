@@ -20,6 +20,10 @@ package cse360assign2;
  * 		+count(): int
  * 		+toString(): String
  * 		+search(): int
+ * 		+append(): void
+ * 		+first(): int
+ * 		+last(): int
+ * 		+size(): int
  */
 public class SimpleList {
 	
@@ -86,18 +90,16 @@ public class SimpleList {
 			count--;
 		}
 		
-		//decrease the size if the array is more than 25% empty
+		//decrease the size of the array if it is more than 25% empty
 		int elementsTooLow = (int)Math.floor(list.length*0.25);
-		int[] newArray;
-		if (elementsTooLow <= 0) {
-			newArray = new int[1];
-			newArray[0] = list[0];
-		} else if (list.length <= elementsTooLow) {
-			newArray = new int[(int)(Math.round(list.length*0.75))];
-			for(int index = 0; index < list.length; index++)
+		if(count <= elementsTooLow) {
+			System.out.println(elementsTooLow);
+			int[] newArray = new int[(int)(Math.floor(list.length*0.75))];
+			System.out.println(newArray.length);
+			for (int index = 0; index < count; index++)
 				newArray[index] = list[index];
 			list = newArray;
-		}		
+		}	
 	}
 	
 	
@@ -146,6 +148,72 @@ public class SimpleList {
 				return index;
 		return -1;
 	}
+	
+	
+	//NEWLY ADDED METHODS
+	/**
+	 * 
+	 * @param numberToAdd the value to be placed at the end of the array
+	 * Adds a number to the next available spot in the array. If the array
+	 * is full, a new array that is 50% bigger will be created
+	 */
+	public void append(int numberToAdd) {
+	//if the array is full, make the array 50% bigger
+		if (count >= list.length) {
+			int[] newArray = new int[(int)Math.floor(list.length*1.5)];
+			//fill in the new array with elements of the old array
+			for(int index = 0; index < list.length; index++)
+				newArray[index] = list[index];
+			list = newArray;
+		} 
+		
+		list[count] = numberToAdd;
+		count++;	
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @return the value located at the first index of the array. If the 
+	 * array is empty, the value that is returned will be -1
+	 */
+	public int first() {
+		int value;
+		if (count > 0) 
+			value = list[0];
+		else 
+			value = -1;
+		return value;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @return the value locted at the last index of the array. If the 
+	 * array is empty, the value that is returned will be -1
+	 */
+	public int last() {
+		int value;
+		if (count > 0)
+			value = list[count-1];
+		else
+			value = -1;
+		return value;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @return the length of the array
+	 * All the possible spots of the array
+	 */
+	public int size() {
+		return list.length;
+	}
+	
 	
 	
 	
