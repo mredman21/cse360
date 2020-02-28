@@ -120,18 +120,32 @@ class SimpleListTest {
 		testList.remove(2);
 		testList.remove(3);
 		testList.remove(4);
-		testList.remove(5);
-		testList.remove(6);
-		testList.remove(7);
-		testList.remove(8);
 		
 		int expectedValue = 7;
 		int actualValue = testList.size();
+		
+		assertEquals(expectedValue, actualValue);
+	}	
+	
+	@Test
+	//test size after removing integers going below 25% emptiness
+	void test5B() {
+		SimpleList testList = new SimpleList();
+		int[] tempArray = {1, 2, 3, 4, 5, 6, 7};
+		testList.setArray(tempArray);
+		
+		testList.remove(1);
+		testList.remove(2);
+		
+		int expectedValue = 5;
+		int actualValue = testList.size();
+		
 		
 		//System.out.println(actualValue);
 		
 		assertEquals(expectedValue, actualValue);
 	}	
+	
 	
 	@Test
 	//test count after appending integers

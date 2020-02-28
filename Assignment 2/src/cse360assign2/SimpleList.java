@@ -90,12 +90,11 @@ public class SimpleList {
 			count--;
 		}
 		
-		//decrease the size of the array if it is more than 25% empty
-		int elementsTooLow = (int)Math.floor(list.length*0.25);
-		if(count <= elementsTooLow) {
-			System.out.println(elementsTooLow);
+		//decrease the size of the array if more than 25% empty spaces
+		int arrayFull = (int)Math.floor(list.length*0.75);
+		
+		if(count <= arrayFull) {
 			int[] newArray = new int[(int)(Math.floor(list.length*0.75))];
-			System.out.println(newArray.length);
 			for (int index = 0; index < count; index++)
 				newArray[index] = list[index];
 			list = newArray;
